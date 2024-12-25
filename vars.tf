@@ -1,10 +1,9 @@
-# Disk image
 variable "disk_image" {
   type = string
   default = "/var/lib/libvirt/images/bookworm-packer"
 }
 
-variable "number_of_controllers" {
+variable "number_of_managers" {
   type = number
   default = 1
 }
@@ -19,9 +18,9 @@ variable "domain_name" {
   default = ".home.lab"
 }
 
-variable "controller_subdomain" {
+variable "manager_subdomain" {
   type = string
-  default = "controller-"
+  default = "manager-"
 }
 
 variable "worker_subdomain" {
@@ -44,4 +43,9 @@ variable "network" {
     netmask = "/24"
     dns = "10.0.40.1"
   }
+}
+
+variable "ssh_private_key_file" {
+  type = string
+  default = "~/.ssh/packer_key"
 }
