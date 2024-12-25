@@ -16,7 +16,7 @@ variable "number_of_workers" {
 
 variable "domain_name" {
   type = string
-  default = "home.lab"
+  default = ".home.lab"
 }
 
 variable "controller_subdomain" {
