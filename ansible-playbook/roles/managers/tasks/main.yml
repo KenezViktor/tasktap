@@ -1,0 +1,15 @@
+---
+- name: "Init cluster"
+  community.docker.docker_swarm:
+    state: present
+  register: output
+  when: inventory_hostname in groups['manager'][0]
+
+- name: "Join manager nodes"
+  community.docker.docker_swarm:
+    state: join
+    timeout: 60
+    remote_addrs:
+      - "{{ groups['manager'][0] }}"
+    join_token: "{{ hostvars[groups['manager'][0]]['output']['swarm_facts']['JoinTokens']['Manager'] }}"
+  when: inventory_hostname not in groups['manager'][0]
