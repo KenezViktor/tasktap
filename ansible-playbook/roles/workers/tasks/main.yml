@@ -1,5 +1,5 @@
 ---
-- name: "Join manager nodes"
+- name: "Join worker nodes"
   community.docker.docker_swarm:
     state: join
     timeout: 60
