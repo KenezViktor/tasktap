@@ -1,0 +1,69 @@
+version: '3'
+services:
+  app:
+    # for update:
+    # commend following line, uncomment line below that
+    image: shinsenter/php:8.0-fpm-apache
+    #image: shinsenter/php:8.1-fpm-apache
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+    volumes:
+      - /shared/tasktap/app/server.php:/var/www/html/server.php
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - database
+  frontendproxy:
+    image: nginx:1.26-bookworm
+    ports:
+      - 80:80
+    volumes:
+      - /shared/tasktap/frontendproxy/:/etc/nginx/conf.d/
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - app
+  database:
+    image: mariadb:lts
+    environment:
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_PASS}
+      - MARIADB_DATABASE=${DB_NAME}
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=1
+    volumes:
+      - /shared/database/db/:/var/lib/mysql/
+      - /shared/database/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+  phpmyadmin:
+    image: phpmyadmin:latest
+    environment:
+      - PMA_ARBITRARY=${PMA_ARBITRARY}
+      - PMA_HOST=${DB_HOST}
+      - PMA_USER=${DB_USER}
+      - PMA_PASSWORD=${DB_PASS}
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - database
+

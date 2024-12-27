@@ -1,6 +1,11 @@
 ---
+- name: "Setup NFS server"
+  hosts: storage
+  roles:
+    - storage
+
 - name: "Install basic softwares, tools and dependencies"
-  hosts: all
+  hosts: manager, worker
   roles:
     - base
 
@@ -13,3 +18,17 @@
   hosts: worker
   roles:
     - workers
+
+- name: "Deploy stacks"
+  hosts: manager[0]
+  roles:
+    - deploy
+
+- name: "Cleanup"
+  hosts: manager, worker
+  tasks:
+    - name: "Prune containers, networks, volumes"
+      community.docker.docker_prune:
+        containers: true
+        networks: true
+        volumes: true

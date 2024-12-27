@@ -3,6 +3,24 @@
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
 
+- name: "Install NFS common"
+  ansible.builtin.apt:
+    name: nfs-common
+    state: present
+
+- name: "Ensure shared dir exists"
+  ansible.builtin.file:
+    path: "/shared/"
+    state: directory
+
+- name: "Mount NFS Share"
+  ansible.posix.mount:
+    src: "{{ groups['storage'][0] }}:/shared/"
+    path: "/shared/"
+    opts: rw
+    state: mounted
+    fstype: nfs
+
 - name: "Install curl"
   ansible.builtin.apt:
     name: curl

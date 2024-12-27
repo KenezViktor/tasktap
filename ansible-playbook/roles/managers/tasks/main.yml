@@ -1,4 +1,9 @@
 ---
+- name: "Install jsondiff"
+  ansible.builtin.apt:
+    name: python3-jsondiff
+    state: present
+
 - name: "Init cluster"
   community.docker.docker_swarm:
     state: present
