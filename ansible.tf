@@ -14,6 +14,14 @@ resource "ansible_group" "worker" {
   }
 }
 
+resource "ansible_group" "storage" {
+  name = "storage"
+  variables = {
+    ansible_user = "root"
+    ansible_ssh_private_key_file = var.ssh_private_key_file
+  }
+}
+
 resource "ansible_host" "manager" {
   count = var.number_of_managers
   name = join("", [var.manager_subdomain, count.index, var.domain_name])
@@ -24,4 +32,9 @@ resource "ansible_host" "worker" {
   count = var.number_of_workers
   name = join("", [var.worker_subdomain, count.index, var.domain_name])
   groups = [ ansible_group.worker.name ]
+}
+
+resource "ansible_host" "storage" {
+  name = join("", ["storage", var.domain_name])
+  groups = [ ansible_group.storage.name ]
 }
