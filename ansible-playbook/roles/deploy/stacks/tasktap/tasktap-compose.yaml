@@ -56,4 +56,3 @@ services:
         condition: on-failure
     depends_on:
       - database
-
