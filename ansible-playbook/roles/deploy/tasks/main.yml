@@ -3,6 +3,9 @@
   ansible.builtin.copy:
     src: "stacks/{{ item }}/"
     dest: "/shared/{{ item }}/"
+    owner: root
+    group: root
+    mode: '0755'
   loop:
     - tasktap
 

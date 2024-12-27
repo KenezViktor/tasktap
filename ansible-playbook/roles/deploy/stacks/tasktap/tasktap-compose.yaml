@@ -5,11 +5,8 @@ services:
     # commend following line, uncomment line below that
     image: shinsenter/php:8.0-fpm-apache
     #image: shinsenter/php:8.1-fpm-apache
-    environment:
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - DB_NAME=${DB_NAME}
+    env_file:
+      - .env
     volumes:
       - /shared/tasktap/app/server.php:/var/www/html/server.php
     deploy:
@@ -37,14 +34,10 @@ services:
       - app
   database:
     image: mariadb:lts
-    environment:
-      - MARIADB_USER=${DB_USER}
-      - MARIADB_PASSWORD=${DB_PASS}
-      - MARIADB_DATABASE=${DB_NAME}
-      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=1
+    env_file:
+      - .env
     volumes:
-      - /shared/database/db/:/var/lib/mysql/
-      - /shared/database/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - /shared/tasktap/database/:/var/lib/mysql/
     deploy:
       placement:
         constraints:
@@ -53,11 +46,8 @@ services:
         condition: on-failure
   phpmyadmin:
     image: phpmyadmin:latest
-    environment:
-      - PMA_ARBITRARY=${PMA_ARBITRARY}
-      - PMA_HOST=${DB_HOST}
-      - PMA_USER=${DB_USER}
-      - PMA_PASSWORD=${DB_PASS}
+    env_file:
+      - .env
     deploy:
       placement:
         constraints:
