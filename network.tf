@@ -11,5 +11,15 @@ resource "libvirt_network" "docker-swarm" {
 
   dns {
     enabled = true
+    
+    hosts {
+      hostname = "tasktap.local"
+      ip = "10.0.40.100"
+    }
+
+    hosts {
+      hostname = "phpmyadmin.local"
+      ip = "10.0.40.100"
+    }
   }
 }
