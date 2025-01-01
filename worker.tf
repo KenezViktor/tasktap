@@ -9,7 +9,7 @@ resource "libvirt_volume" "worker-qcow2" {
 resource "libvirt_domain" "worker" {
   count = var.number_of_workers
   name = join("", [var.worker_subdomain, count.index, var.domain_name])
-  memory = 2048
+  memory = 1024
   vcpu = 2
 
   network_interface {
