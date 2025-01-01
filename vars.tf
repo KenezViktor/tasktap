@@ -10,7 +10,7 @@ variable "number_of_managers" {
 
 variable "number_of_workers" {
   type = number
-  default = 2
+  default = 5
 }
 
 variable "domain_name" {
