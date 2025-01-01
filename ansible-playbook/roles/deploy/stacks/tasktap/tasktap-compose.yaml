@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   app:
     # for update:
@@ -10,12 +10,15 @@ services:
     volumes:
       - /shared/tasktap/app/server.php:/var/www/html/server.php
     deploy:
-      replicas: 2
+      replicas: 5
       placement:
         constraints:
           - node.role == worker
-      restart_policy:
-        condition: on-failure
+        max_replicas_per_node: 1
+      update_config:
+        parallelism: 1
+      rollback_config:
+        parallelism: 1
     depends_on:
       - database
   frontendproxy:
@@ -28,8 +31,6 @@ services:
       placement:
         constraints:
           - node.role == manager
-      restart_policy:
-        condition: on-failure
     depends_on:
       - app
   database:
@@ -42,8 +43,6 @@ services:
       placement:
         constraints:
           - node.role == worker
-      restart_policy:
-        condition: on-failure
   phpmyadmin:
     image: phpmyadmin:latest
     env_file:
@@ -52,7 +51,5 @@ services:
       placement:
         constraints:
           - node.role == worker
-      restart_policy:
-        condition: on-failure
     depends_on:
       - database
