@@ -9,7 +9,7 @@ resource "libvirt_volume" "manager-qcow2" {
 resource "libvirt_domain" "manager" {
   count = var.number_of_managers
   name = join("", [var.manager_subdomain, count.index, var.domain_name])
-  memory = 2048
+  memory = 1024
   vcpu = 2
 
   network_interface {
