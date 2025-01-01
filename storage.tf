@@ -7,7 +7,7 @@ resource "libvirt_volume" "storage-qcow2" {
 
 resource "libvirt_domain" "storage" {
   name = join("", ["storage", var.domain_name])
-  memory = 2048
+  memory = 1024
   vcpu = 2
 
   network_interface {
