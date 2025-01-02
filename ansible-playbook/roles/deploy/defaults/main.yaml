@@ -16,4 +16,4 @@ db_host: "database"
 basic_auth: "phpmyadmin"
 
 # replicas
-app_replicas: 2
+app_replicas: 5
