@@ -122,3 +122,19 @@ To create the swarm and deploy ```tasktap```:
 ```
 ansible-playbook -i ./inventory.yaml --diff ansible-playbook/swarm.yaml
 ```
+
+## Testing, upgrading image
+
+### Run client.sh
+
+```
+./client.sh
+```
+
+### Check browser
+
+A browser should load ```tasktap.local/server.php?op=info``` page. Visit ```phpmyadmin.local``` to check database, and the results of ```./client.sh```.
+
+### Upgrade the image
+
+Change app_image var's value at ```ansible-playbook/roles/deploy/default/main.yml``` then re-run the playbook.
