@@ -1,0 +1,41 @@
+---
+- name: "Create tasktap dir"
+  ansible.builtin.file:
+    path: "/shared/tasktap"
+    state: directory
+    mode: "0755"
+
+- name: "Create database dir"
+  ansible.builtin.file:
+    path: "/shared/tasktap/database"
+    state: directory
+    mode: "0755"
+
+- name: "Copy service dirs"
+  ansible.builtin.copy:
+    src: "{{ item }}/"
+    dest: "/shared/{{ item }}/"
+  loop:
+    - "tasktap/app"
+    - "tasktap/frontendproxy"
+
+- name: "Template stack yaml"
+  ansible.builtin.template:
+    src: "tasktap/tasktap-compose.yaml.j2"
+    dest: "/shared/tasktap/tasktap-compose.yaml"
+    mode: "0640"
+
+- name: "Template stack yaml"
+  ansible.builtin.template:
+    src: "tasktap/.env.j2"
+    dest: "/shared/tasktap/.env"
+    mode: "0640"
+
+- name: "Create htpasswd for frontendproxy"
+  community.general.htpasswd:
+    path: "/shared/tasktap/frontendproxy/.htpasswd"
+    name: "phpmyadmin"
+    password: "{{ basic_auth }}"
+    owner: root
+    group: root
+    mode: "0644"

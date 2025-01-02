@@ -12,6 +12,7 @@
   ansible.builtin.file:
     path: "/shared/"
     state: directory
+    mode: "0755"
 
 - name: "Mount NFS Share"
   ansible.posix.mount:

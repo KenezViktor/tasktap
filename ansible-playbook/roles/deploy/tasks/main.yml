@@ -1,19 +1,12 @@
 ---
-- name: "Copy compose yaml files"
-  ansible.builtin.copy:
-    src: "stacks/{{ item }}/"
-    dest: "/shared/{{ item }}/"
-    owner: root
-    group: root
-    mode: '0755'
-  loop:
-    - tasktap
+- name: "Setup tasktap stack"
+  ansible.builtin.include_tasks: "tasktap.yml"
 
 - name: "Deploy stacks"
   community.docker.docker_stack:
     name: tasktap
     state: present
     compose:
-      - "/shared/tasktap/{{ item }}"
+      - "/shared/{{ item }}"
   loop:
-    - tasktap-compose.yaml
+    - tasktap/tasktap-compose.yaml

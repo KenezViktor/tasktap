@@ -1,0 +1,19 @@
+# image versions
+app_image: "shinsenter/php:8.1-fpm-apache"
+# app_image: "shinsenter/php:8.1-fpm-apache"
+frontendproxy_image: "nginx:1.26-bookworm"
+database_image: "mariadb:lts"
+phpmyadmin_image: "phpmyadmin:latest"
+
+# env vars
+db_name: "app"
+db_user: "app"
+db_pass: "app"
+db_root: "app"
+db_host: "database"
+
+# basic auth pass
+basic_auth: "phpmyadmin"
+
+# replicas
+app_replicas: 2
